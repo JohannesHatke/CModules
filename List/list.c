@@ -46,7 +46,20 @@ List *initList(int val){ //TODO: implement vararg to allow multiple values at in
     ls->head = new;
     return ls;
 }
+int append(List *ls, int val){
+    if(!ls->head){
+        insert(ls,0,val);
+        return 0;
+    }
 
+    Node *new = initNode(val);
+    Node *curr =ls->head;
+    while(curr->next){
+        curr = curr->next;
+    }
+    curr->next = new;
+    return 0;
+}
 int insert(List *ls,int pos,int val){
     if (pos==0){
         Node *new = initNode(val);
@@ -97,5 +110,17 @@ int length(List *ls){
     }
     return i;
 }
-
-
+int freeNodes(Node *curr){
+    if(!curr->next){
+        return 0;
+    }
+    freeNodes(curr->next);
+    free(curr->next);
+    return 0;
+}
+int freeList(List *ls){
+    freeNodes(ls->head);
+    printf("freeNodes success\n");
+    free(ls->head);
+    return 0;
+}

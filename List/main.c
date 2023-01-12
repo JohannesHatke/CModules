@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "list.h"
 int printList(List *ls){
     Node *c = ls->head;
@@ -18,5 +19,10 @@ int main(void){
     List *ls = initList(0);
     insert(ls,0,-1);
     printList(ls);
+    append(ls,1);
+    append(ls,2);
+    printList(ls);
+    freeList(ls);
+    free(ls);
     return 0;
 }
