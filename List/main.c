@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "list.h"
 int printList(List *ls){
+    if(!ls->head){
+        printf("[]\n");
+        return 0;
+    }
     Node *c = ls->head;
     printf("[");
     while(c->next){
@@ -24,5 +28,26 @@ int main(void){
     printList(ls);
     freeList(ls);
     free(ls);
+
+    printf("Running pop testing...\n");
+    List *b = initList(0);
+    insert(b,0,-1);
+    insert(b,0,-2);
+    append(b,1);
+    printList(b);
+    printf("pop(0):\n");
+    pop(b,0);
+    printList(b);
+    printf("pop(2):\n");
+    pop(b,2);
+    printList(b);
+    printf("pop(0):\n");
+    pop(b,0);
+    printList(b);
+    printf("pop(0):\n");
+    pop(b,0);
+    printList(b);
+    freeList(b);
+    free(b);
     return 0;
 }

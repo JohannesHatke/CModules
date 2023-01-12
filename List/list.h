@@ -25,7 +25,8 @@ int length(List *ls);// Number of elements in list
                        
 int pop(List *ls, int pos);// removes item at index pos
 
-int freeList(List *ls); //free complete List                      
+int freeList(List *ls); //free complete List
+                        //still need to call free(ls) afterwards
 
 List *initList(int val);
 
