@@ -13,10 +13,10 @@ typedef struct{
 
 int appendNode(Node *curr,int val); //append a new Node with val=val to Node curr
 
-// int append(List *curr,int val); //append a new Node to the end of list ls with val=val
                                   
 int insert(List *curr,int pos,int val); //insert a new Node in ls at position pos
                                 //insert(ls, lenght(ls), val) will append to end
+                                //if pos is out of range function will fail, returning 1
 
 int append(List *ls,int val); //append val to end of List
 

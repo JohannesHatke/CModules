@@ -1,16 +1,7 @@
 #include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
-/*
-typedef struct singleNode{
-    int val;
-    singleNode *next;
-}singleNode;
 
-typedef struct singleLinkedList{ //Head
-    singleNode *next;
-}singleLinkedList;
-*/
 Node *initNode(int val){
     Node *curr = malloc(sizeof(Node));
     if(!curr) return NULL;
@@ -38,7 +29,7 @@ int removeNode(Node *curr){
 
 }
 
-List *initList(int val){ //TODO: implement vararg to allow multiple values at initiliasation
+List *initList(int val){ 
     List *ls = malloc(sizeof(List));
     if(!ls) return NULL;
     Node *new = initNode(val);
@@ -76,7 +67,7 @@ int insert(List *ls,int pos,int val){
         i++;
         curr = curr->next;
     }
-    //if(!curr || !curr->next) return 1;
+    if(i != pos-1) return 1;
 
     appendNode(curr,val);
     return 0;
@@ -86,15 +77,6 @@ int pop(List *ls,int pos){
         if(!ls->head) return 1;
         Node *p = ls->head;
         ls->head = p->next;
-
-        /*
-
-        if(!ls->head){
-            ls->head = NULL;
-        }
-
-        */
-
         free(p);
         return 0;
     }
@@ -110,7 +92,6 @@ int pop(List *ls,int pos){
     return 0;
 }
 int length(List *ls){
-    //if (!ls->head) return 0;
     Node *curr =ls->head;
     int i = 0;
     while(curr){
