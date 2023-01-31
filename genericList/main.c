@@ -111,22 +111,24 @@ int main(void){
     printf(str2);
 
 
-    List *ls = initList(x,NULL);
+    List *ls = initList(x,&freeExample);
     //printExampleList(ls);
 
-    //append(ls,a);
+    append(ls,a);
 
     printExampleList(ls);
 
     //printf("\nNew Tests (foreach):\n\n");
     foreach(ls,func);
-    //printExampleList(ls);
+    printExampleList(ls);
     //free(x->fp);
 
     
     freeList(ls);
     free(ls);
-
+    free(str2);
+    free(str);
+/*
     freeExample(x);
     freeExample(a);
     free(str2);
@@ -134,5 +136,6 @@ int main(void){
 
     free(a);
     free(x);
+    */
     return 0;
 }
