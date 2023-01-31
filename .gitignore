@@ -1,4 +1,7 @@
 List/main
+genericList/main
+genericList/dbcompile
+genericList/debug
 # Prerequisites
 *.d
 
