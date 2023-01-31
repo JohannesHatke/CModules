@@ -35,6 +35,7 @@ List *initList(void *val,int (*freePtr)(void*)){
     Node *new = initNode(val);
     if (!new) return NULL;
     ls->head = new;
+    ls->freePointer = freePtr;
     return ls;
 }
 int append(List *ls,void *val){
@@ -112,7 +113,7 @@ int freeList(List *ls){
     if(!ls->head){
         return 0;
     }
-
+    if (ls->freePointer != NULL) foreach(ls,ls->freePointer);
     freeNodes(ls->head);
     free(ls->head);
     return 0;

@@ -3,6 +3,8 @@
 #include <string.h>
 #include "list.h"
 
+//TODO: fix methods that remove stuff from list
+
 struct Example{
     int a;
     int b;
@@ -121,7 +123,9 @@ int main(void){
     //printExampleList(ls);
     //free(x->fp);
 
-
+    
+    freeList(ls);
+    free(ls);
 
     freeExample(x);
     freeExample(a);
