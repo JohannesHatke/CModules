@@ -29,7 +29,7 @@ int removeNode(Node *curr){
 
 }
 
-List *initList(void *val){ 
+List *initList(void *val,int (*freePtr)(void*)){ 
     List *ls = malloc(sizeof(List));
     if(!ls) return NULL;
     Node *new = initNode(val);
@@ -115,5 +115,18 @@ int freeList(List *ls){
 
     freeNodes(ls->head);
     free(ls->head);
+    return 0;
+}
+int foreach(List *ls,int (*funcPtr)(void*)){
+    Node *curr = ls->head;
+    int i = 0;
+    while(curr){
+        i++;
+        if (((*funcPtr)(curr->val))!=0){
+            printf("ERROR at index %d\n",i);
+            return 1;
+        }
+        curr = curr->next;
+    }
     return 0;
 }

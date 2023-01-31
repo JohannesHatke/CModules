@@ -8,14 +8,28 @@ struct Example{
     int b;
     char *fp;
 }Example;
+
+//function to be used in for each tests
+int func(void *vPointer){
+    //struct Example workingPointer = (struct Example *) vPointer;
+    struct Example *workingPointer = (struct Example *) vPointer;
+    workingPointer->a++;
+    return 0;
+}
+
+
+
 int printExample(struct Example *toPrint, char *output,int maxlen){
     char *buf = malloc(200*sizeof(char));
+    buf[0] = '\0';
+    output[0] = '\0';
     int a =toPrint->a;
     int b =toPrint->b;
     char *fp = toPrint->fp;
     snprintf(buf,199, "Example-Struct with the following values:\n\ta:\t%d\n\tb:\t%d\n\ts:\t%s\n",a,b,fp);
     if ((int)(strlen(buf)) > maxlen) return 1;
-    strncpy(output,buf,maxlen);
+    strcpy(output,buf);//,maxlen);
+    free(buf);
     return 0;
 }
 struct Example *initExample(int a,int b,char *f){
@@ -23,12 +37,13 @@ struct Example *initExample(int a,int b,char *f){
     output->a = a;
     output->b = b;
     int len = strlen(f);
-    output->fp = malloc(len*sizeof(char));
-    strncpy(output->fp,f,len);
+    output->fp = malloc((len+1)*sizeof(char));
+    strcpy(output->fp,f);//,len);
     return output;
 }
-int freeExample(struct Example *toDelete){
-    free(toDelete->fp);
+int freeExample(void *toDelete){
+    struct Example *working = (struct Example*)(toDelete);
+    free(working->fp);
     return 0;
 }
 
@@ -58,12 +73,16 @@ int printExampleList(List *ls){
     }
     Node *c = ls->head;
     printf("List:\n[\n");
-    do{
+    int i = 0;
+    while(c){
         char *str = malloc(sizeof(char)*150);
         printExample((c->val),str, 150);
+        printf("%d\n",i);
+        i++;
         printf(str);
         free(str);
-    }while(c->next);
+        c = c->next;
+    };
     printf("]\nEnde der Liste\n");
     return 0;
 }
@@ -83,13 +102,25 @@ int main(void){
 
     
     struct Example *x = initExample(10,211,"aaaaaaaa");
-    char *str2 = malloc(100*sizeof(char));
-    printExample(x,str2,100);
+    char *str2 = malloc(200*sizeof(char));
+    str2[0] = 'a';
+    str2[0] = '\0';
+    printExample(x,str2,200);
     printf(str2);
 
 
-    List *ls = initList(x);
+    List *ls = initList(x,NULL);
+    //printExampleList(ls);
+
+    //append(ls,a);
+
     printExampleList(ls);
+
+    //printf("\nNew Tests (foreach):\n\n");
+    foreach(ls,func);
+    //printExampleList(ls);
+    //free(x->fp);
+
 
 
     freeExample(x);
@@ -97,7 +128,7 @@ int main(void){
     free(str2);
     free(str);
 
-
-
+    free(a);
+    free(x);
     return 0;
 }
