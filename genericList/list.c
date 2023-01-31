@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+//TODO: fix pop
+//fix removeNode
+//
+
 Node *initNode(void *val){
     Node *curr = malloc(sizeof(Node));
     if(!curr) return NULL;
@@ -19,7 +24,7 @@ int appendNode(Node *curr,void *val){
     return 0;
 }
 
-int removeNode(Node *curr){
+int removeNode(Node *curr){//TODO: use free function
     if (!curr->next) return 1;
 
     Node *p = curr->next;
@@ -73,7 +78,7 @@ int insert(List *ls,int pos,void *val){
     appendNode(curr,val);
     return 0;
 }
-int pop(List *ls,int pos){
+int pop(List *ls,int pos){ //TODO: at least need to test
     if(pos==0){
         if(!ls->head) return 1;
         Node *p = ls->head;
