@@ -78,6 +78,7 @@ int pop(List *ls,int pos){
         if(!ls->head) return 1;
         Node *p = ls->head;
         ls->head = p->next;
+        if (ls->freePointer != NULL) (*(ls->freePointer))(p);
         free(p);
         return 0;
     }
@@ -106,6 +107,7 @@ int freeNodes(Node *curr){
         return 0;
     }
     freeNodes(curr->next);
+    free((curr->next)->val);
     free(curr->next);
     return 0;
 }
@@ -115,6 +117,7 @@ int freeList(List *ls){
     }
     if (ls->freePointer != NULL) foreach(ls,ls->freePointer);
     freeNodes(ls->head);
+    free((ls->head)->val);
     free(ls->head);
     return 0;
 }
