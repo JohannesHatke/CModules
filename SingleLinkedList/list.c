@@ -24,12 +24,14 @@ int appendNode(Node *curr,void *val){
     return 0;
 }
 
-int removeNode(Node *curr){//TODO: use free function
+int removeNode(Node *curr, int (*freePtr)(void*)){//TODO: use free function
     if (!curr->next) return 1;
 
-    Node *p = curr->next;
-    curr->next = p->next;
-    free(p);
+    Node *toDelete = curr->next;
+    curr->next = toDelete->next;
+    freePtr(toDelete->val);
+    free(toDelete->val);
+    free(toDelete);
     return 0;
 
 }
@@ -95,7 +97,7 @@ int pop(List *ls,int pos){ //TODO: at least need to test
         curr = curr->next;
     }
     if (!curr || !curr->next) return 1;
-    removeNode(curr);
+    removeNode(curr, ls->freePointer);
     return 0;
 }
 int length(List *ls){

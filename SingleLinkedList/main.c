@@ -122,8 +122,33 @@ int main(void){
     foreach(ls,func);
     printExampleList(ls);
     //free(x->fp);
-
+    //
     
+    printf("bigger Tests\n\n\n\n");
+    for(int j = 0; j< 10; j++){
+        struct Example *c = initExample(j,j*2,"for");
+        append(ls, c);
+    }
+    printExampleList(ls);
+
+    printf("pop tests\n\n\n\n");
+    printf("pop(2)\n");
+    pop(ls,2);
+    printExampleList(ls);
+    printf("\n\npop(5)\n");
+    pop(ls,5);
+    printExampleList(ls);
+
+    printf("\n\ninsert(5)\n");
+    struct Example *f = initExample(0,0,"insert1");
+    insert(ls,5, f);
+    printExampleList(ls);
+
+    printf("\n\ninsert(0)\n");
+    struct Example *g = initExample(0,0,"insert2");
+    insert(ls,0, g);
+    printExampleList(ls);
+    //freeing up used Memory
     freeList(ls);
     free(ls);
     free(str2);
