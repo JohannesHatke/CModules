@@ -35,5 +35,5 @@ void AL_set(ArrayList *al,int pos, void *val);
 /*
 * get value at pos
 */
-void AL_get(ArrayList *al,int pos);
+void *AL_get(ArrayList *al,int pos);
 #endif

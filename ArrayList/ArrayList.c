@@ -59,7 +59,7 @@ void getIndex(ArrayList *al,int pos, int *index1, int *index2){
 
 void AL_set(ArrayList *al,int pos, void *val){
 	int index1,index2;
-	getIndex(al, pos, &index1, &index2);
+	getIndex(al, pos,&index1,&index2);
 
 	if (al->entries[index1] == NULL)
 		al->entries[index1] = (void*) calloc(ownPow(2, index1), sizeof(void*)* al->startSize );
