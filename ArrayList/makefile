@@ -1,9 +1,10 @@
+CFLAGS= -Wall -Wextra -pedantic -std=c99 -g
 main: ArrayList.o main.o
-	$(CC) main.o ArrayList.o -o main -Wall -Wextra -pedantic -std=c99
+	$(CC) $(CFLAGS) main.o ArrayList.o -o main 
 ArrayList.o: ArrayList.c
-	$(CC) -c ArrayList.c -o ArrayList.o -Wall -Wextra -pedantic -std=c99
+	$(CC) $(CFLAGS) -c ArrayList.c -o ArrayList.o -Wall 
 main.o: main.c
-	$(CC) -c main.c -o main.o -Wall -Wextra -pedantic -std=c99
+	$(CC) $(CFLAGS) -c main.c -o main.o 
 clean:
 	rm ArrayList.o
 	rm main.o

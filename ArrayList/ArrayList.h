@@ -36,4 +36,18 @@ void AL_set(ArrayList *al,int pos, void *val);
 * get value at pos
 */
 void *AL_get(ArrayList *al,int pos);
+
+/*
+* execute the given function for each filled entry.
+* The parameters it gets are the void pointer to the entry and a position
+*/
+int AL_foreach(ArrayList *al, void (*fp)(void*, int));
+
+/*
+* free the ArrayList structure.
+* Does not free the entries themselves. This has to be done seperately
+* for example with the foreach method.
+*/
+void AL_free(ArrayList *al);
+
 #endif

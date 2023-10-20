@@ -50,14 +50,18 @@ ArrayList *AL_init(int size){
 }
 
 void getIndex(ArrayList *al,int pos, int *index1, int *index2){
+	int passed = 0;
 	for (*index1 = 0; *index1< 100; (*index1)++){
-		if ( pos < al->startSize * ownPow(2, *index1))
+		if ( pos - passed < al->startSize * ownPow(2, *index1))
 			break;
+		passed += al->startSize * ownPow(2, *index1);
+
 	}
-	*index2 = pos - al->startSize * ownPow(2, *index1-1);
+	*index2 = pos - passed;
 }
 
 void AL_set(ArrayList *al,int pos, void *val){
+	al->len = (pos > al->len) ? pos + 1 : al->len;
 	int index1,index2;
 	getIndex(al, pos,&index1,&index2);
 
@@ -75,3 +79,42 @@ void *AL_get(ArrayList *al,int pos){
 
 	return al->entries[index1][index2];
 }
+
+/*
+* execute the given function for each filled entry.
+* The parameters it gets are the void pointer to the entry and a position
+*/
+int AL_foreach(ArrayList *al, void (*fp)(void*, int)){
+	int pos,index1,index2, func_calls;
+	pos = index1 = index2= func_calls =0;
+	while ( pos < al->len){
+		//moving from one index to another
+		//either when at the end or when it hasn't been filled.
+		if(index2 == ownPow(2, index1) * al->startSize 
+			|| al->entries[index1] == NULL){
+			index1++;
+			index2 = 0;
+			continue;
+		}
+
+		if (al->entries[index1][index2] != NULL){
+			func_calls++;
+			fp(al->entries[index1][index2],pos);
+		}
+		pos++;
+		index2++;
+	}
+	return func_calls;
+}
+
+void AL_free(ArrayList *al){
+	for (int i = 0; i< 100; i++){
+		if(al->entries[i] != NULL)
+			free(al->entries[i]);
+	}
+	free(al->entries);
+	free(al);
+}
+
+
+
