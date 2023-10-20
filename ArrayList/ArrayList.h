@@ -43,6 +43,8 @@ void *AL_get(ArrayList *al,int pos);
 */
 int AL_foreach(ArrayList *al, void (*fp)(void*, int));
 
+void AL_append(ArrayList *al,void *val);
+
 /*
 * free the ArrayList structure.
 * Does not free the entries themselves. This has to be done seperately

@@ -42,10 +42,9 @@ int ownPow(int base, int power){ // avoiding math.h
 }
 ArrayList *AL_init(int size){
 	ArrayList *output = malloc(sizeof(ArrayList));
-	output->len = size;
+	output->len = 0;
 	output->startSize = size;
 	output->entries = (void*) calloc(100 , sizeof(void*));
-	output->entries[0] = (void*) calloc(size , sizeof(void*));
 	return output;
 }
 
@@ -61,7 +60,7 @@ void getIndex(ArrayList *al,int pos, int *index1, int *index2){
 }
 
 void AL_set(ArrayList *al,int pos, void *val){
-	al->len = (pos > al->len) ? pos + 1 : al->len;
+	al->len = (pos >= al->len) ? pos + 1 : al->len;
 	int index1,index2;
 	getIndex(al, pos,&index1,&index2);
 
@@ -107,6 +106,9 @@ int AL_foreach(ArrayList *al, void (*fp)(void*, int)){
 	return func_calls;
 }
 
+void AL_append(ArrayList *al,void *val){
+	AL_set(al,al->len,val);
+}
 void AL_free(ArrayList *al){
 	for (int i = 0; i< 100; i++){
 		if(al->entries[i] != NULL)
