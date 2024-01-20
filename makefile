@@ -1,6 +1,6 @@
 CFLAGS= -Wall -Wextra -pedantic -std=c99 -O0 -g
 
-main: HashTable ArrayList
+main: HashTable ArrayList SingleLinkedList
 
 clean: 
 	rm -r ./build
