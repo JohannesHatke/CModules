@@ -2,20 +2,36 @@
 #include "HashTable.h"
 
 
-#define HASH_FUNC_EXAMPLE &example_hash
-#define HASH_FUNC_EXAMPLE_SIZE 1000
+/* int section */
 
 int example_hash(void *val){
 	return *( (int*) val) % HASH_FUNC_EXAMPLE_SIZE;
 }
 
+int Hash_free_int(void *entry){
+	free( (int*) entry);
+	return 0;
+}
+
+int Hash_comp_int(void *a, void *b){
+	if ( *((int*) a) == *((int*) b))
+		return 1;
+	return 0;
+
+}
 
 
-HashTable *HashTable_init(int size, int (*hash_func) (void *)){
+/* generic funcitons */
+
+HashTable *HashTable_init(int size, 
+			  int (*hash_func) (void *), int (*free_func) (void *),
+			  int (*comp_func) (void *,void *)){
 	HashTable  *output;
 	if((output = malloc(sizeof(HashTable))) != NULL){
 		output->size = size;
-		output->func = hash_func;
+		output->hash = hash_func;
+		output->comp_func = comp_func;
+		output->free_func = free_func;
 		output->entries = calloc(size,sizeof(Hash_node*));
 	}
 	return output;
@@ -31,10 +47,12 @@ void HashTable_free(HashTable  *table){
 		p = table->entries[i];
 		if (p != NULL ){
 			curr = p->next;
+			(*(table->free_func))(p->val);
 			free(p);
 			while(curr){
 				old = curr;
 				curr = curr->next;
+				(*(table->free_func))(old->val);
 				free(old);
 				count++;
 			}
@@ -74,7 +92,7 @@ int Hash_install(HashTable *table, void *value){
 	if (value ==NULL)
 		return 1;
 
-	pos = (*(table->func)) (value); //make sure function returns in [0, size]
+	pos = (*(table->hash)) (value); //make sure function returns in [0, size]
 	if (pos < 0 || pos > table->size)
 		return 2;
 
@@ -95,13 +113,16 @@ int Hash_install(HashTable *table, void *value){
 * returns pointer to the value if it was found
 * returns Null if value was not found or error occurs
 */
-void *Hash_remove(HashTable *table,void *value, int (*comp)(void*, void*)){
+void *Hash_remove_get(HashTable *table,void *value){
 	int pos;
 	Hash_node *curr,*found;
 	void *output = NULL;
+	int (*comp)(void*, void*) = table->comp_func;
+
+
 	if (value ==NULL)
 		return NULL;
-	pos = (*(table->func)) (value); //make sure function returns in [0, size]
+	pos = (*(table->hash)) (value); //make sure function returns in [0, size]
 	if (pos < 0 || pos > table->size)
 		return NULL;
 
@@ -131,10 +152,15 @@ void *Hash_remove(HashTable *table,void *value, int (*comp)(void*, void*)){
 
 }
 
-
-int Hash_comp_int(void *a, void *b){
-	if ( *((int*) a) == *((int*) b))
+int Hash_remove(HashTable *table,void *value){
+	void *found = Hash_remove_get(table, value);
+	if (found != NULL){
+		(*(table->free_func)) (found);
 		return 1;
+	}
 	return 0;
 
 }
+
+
+
