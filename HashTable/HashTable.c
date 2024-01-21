@@ -147,8 +147,42 @@ void *Hash_remove_get(HashTable *table,void *value){
 		}
 	}
 	return output;
-	
+}
 
+
+/*
+ * returns a pointer to the value that is the same 
+ * as the parameter according to the comp function
+ */
+void *Hash_get(HashTable *table,void *value){
+	int pos;
+	Hash_node *curr,*found;
+	void *output = NULL;
+	int (*comp)(void*, void*) = table->comp_func;
+
+
+	if (value ==NULL)
+		return NULL;
+	pos = (*(table->hash)) (value); //make sure function returns in [0, size]
+	if (pos < 0 || pos > table->size)
+		return NULL;
+
+	curr = table->entries[pos];
+	if((*comp)(value, curr->val)){ // first entry at pos
+		found = curr;
+		output = found->val;
+		return output;
+	} else {
+		for (; curr->next != NULL; 
+		curr = curr->next){
+			if( (*comp)(value, (curr->next)->val)){
+				found = curr->next;
+				output = found->val;
+				return output;
+			};
+		}
+	}
+	return NULL;
 
 }
 

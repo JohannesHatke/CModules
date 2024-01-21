@@ -13,6 +13,8 @@ typedef struct Hash_node{
 	struct Hash_node *next;
 } Hash_node;
 
+
+
 typedef struct HashTable{
 	int size;
 	int (*hash)(void *);
@@ -27,6 +29,13 @@ HashTable *HashTable_init(int size,
 
 int Hash_foreach(HashTable *table, int (*func) (void*));
 int Hash_install(HashTable *table, void *value);
+
+
+/*
+ * returns a pointer to the value that is the same 
+ * as the parameter according to the comp function
+ */
+void *Hash_get(HashTable *table, void *value);
 
 /*
 * removes the first (!) occurence of the value to be found and returns it
